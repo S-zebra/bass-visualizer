@@ -11,7 +11,7 @@ public class GradationGenerator {
 
   public Color nextColor() {
     cHue += 0.00001f;
-    cSaturation = 128f;
+    cSaturation = 256f;
     cBrightness = 128f;
     // System.out.println("cHue:" + cHue);
     return Color.getHSBColor(cHue, cSaturation, cBrightness);

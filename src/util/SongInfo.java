@@ -17,6 +17,10 @@ public class SongInfo {
     info.put(key, value);
   }
 
+  public boolean hasAllKeys() {
+    return info.containsKey(SONG_NAME) && info.containsKey(ARTIST_NAME) && info.containsKey(ALBUM_NAME);
+  }
+
   public String getInfo(String key) {
     return info.get(key);
   }

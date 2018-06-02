@@ -5,15 +5,12 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Polygon;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.util.concurrent.ExecutorService;
@@ -22,12 +19,10 @@ import java.util.concurrent.Executors;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import jouvieje.bass.utils.BufferUtils;
+import spotify.SongInfoReader;
 import util.GradationGenerator;
 import util.InfoCrawlCallback;
 import util.SongInfo;
-import util.SongInfoReader;
-import util.Visualizer;
 import util.AudioCallback;
 
 public class SpeAnaView extends JPanel implements AudioCallback, ComponentListener, ActionListener, InfoCrawlCallback {
@@ -36,6 +31,9 @@ public class SpeAnaView extends JPanel implements AudioCallback, ComponentListen
   private FloatBuffer data;
   private Dimension size;
   private boolean pause = false;
+  private boolean showSongInfo = true;
+  private boolean showFPS = false;
+
   protected Color color;
 
   private int startBand = 2, bands = 7, distance = 5, barWidth = 25;
@@ -132,7 +130,12 @@ public class SpeAnaView extends JPanel implements AudioCallback, ComponentListen
       Font font = new Font("HelveticaNeue", Font.PLAIN, 16);
       gr.setFont(font);
       gr.drawString(Integer.toString(fps) + " fps", marginX, marginY);
-      gr.drawString(songInfo.getInfo(SongInfo.SONG_NAME) + " by " + songInfo.getInfo(SongInfo.ARTIST_NAME) + " on " + songInfo.getInfo(SongInfo.ALBUM_NAME), marginX, marginY + 20);
+      if (songInfo != null) {
+        gr.drawString(songInfo.getInfo(SongInfo.SONG_NAME), marginX, marginY + 20);
+        gr.drawString("by " + songInfo.getInfo(SongInfo.ARTIST_NAME), marginX, marginY + 40);
+        gr.drawString("on " + songInfo.getInfo(SongInfo.ALBUM_NAME), marginX, marginY + 60);
+      }
+      gr.drawPolygon(new Polygon());
     }
   }
 
@@ -143,6 +146,22 @@ public class SpeAnaView extends JPanel implements AudioCallback, ComponentListen
   public void togglePause() {
     pause = !pause;
     System.out.println(pause);
+  }
+
+  public boolean isShowSongInfo() {
+    return showSongInfo;
+  }
+
+  public void setShowSongInfo(boolean showSongInfo) {
+    this.showSongInfo = showSongInfo;
+  }
+
+  public boolean isShowFPS() {
+    return showFPS;
+  }
+
+  public void setShowFPS(boolean showFPS) {
+    this.showFPS = showFPS;
   }
 
   @Override
@@ -187,7 +206,8 @@ public class SpeAnaView extends JPanel implements AudioCallback, ComponentListen
 
   @Override
   public void CrawlDone(SongInfo info) {
-   this.songInfo=info;
+    if (info.hasAllKeys())
+      this.songInfo = info;
   }
 
 }
