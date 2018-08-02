@@ -5,15 +5,13 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+
 import javax.swing.JFrame;
+
 import jouvieje.bass.Bass;
 import jouvieje.bass.BassInit;
 import util.Player;
 import util.Recorder;
-import util.SongInfo;
 
 public class MainWindow extends JFrame implements WindowListener, KeyListener {
   private static final long serialVersionUID = 8679779580592718175L;
@@ -29,7 +27,7 @@ public class MainWindow extends JFrame implements WindowListener, KeyListener {
 
     speAnaView = new SpeAnaView(400, 200);
     player = new Player();
-    player.play();
+//    player.play();
     recorder = new Recorder(1, speAnaView, player);
     recorder.start();
     getContentPane().add(speAnaView);

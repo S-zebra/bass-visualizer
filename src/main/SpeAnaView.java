@@ -167,6 +167,7 @@ public class SpeAnaView extends JPanel implements AudioCallback, ComponentListen
   @Override
   public void dataArrived(ByteBuffer buffer) {
     data = buffer.asFloatBuffer();
+    System.out.println("Data arrived");
     // length = data.limit();
     if (!pause)
       repaint();
